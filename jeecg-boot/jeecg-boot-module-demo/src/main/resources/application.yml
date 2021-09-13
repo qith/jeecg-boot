@@ -3,3 +3,9 @@ server:
 spring:
   application:
     name: jeecg-demo
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

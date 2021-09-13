@@ -21,7 +21,7 @@ import java.util.Set;
  * addLog getDatabaseType queryAllDepart
  * queryAllUser(Wrapper wrapper) queryAllUser(String[] userIds, int pageNo, int pageSize)
  * 修改了一些方法：
- * createLog
+ * createLogqueryAllDict
  * sendSysAnnouncement 只保留了一个，其余全部干掉
  *
  * cloud接口数量43  local：35 common：9  额外一个特殊queryAllRole一个当两个用

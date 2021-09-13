@@ -14,6 +14,7 @@ public class LogAspect {
 
     @Before("execution(* org.jeecg.aop.pojo.impl.MyLogPrint.doPrint(..))")
     public void before(){
+        System.out.println("Begin AOP TEST");
         System.out.println("before log");
     }
 

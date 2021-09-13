@@ -7,6 +7,8 @@ import org.jeecg.common.api.vo.Result;
 
 import org.jeecg.common.system.api.ISysBaseAPI;
 import org.jeecg.common.system.vo.DictModel;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,6 +23,7 @@ import java.util.List;
 @Api(tags = "Cloud示例")
 @RestController
 @RequestMapping("/test")
+@RefreshScope
 public class JcloudDemoController {
 
 
@@ -43,6 +46,24 @@ public class JcloudDemoController {
 //        }
         List<DictModel> list = sysBaseAPI.queryAllDict();
         return Result.OK(list);
+    }
+
+    @Value("${user.name}")
+    String userName;
+
+    @Value("${user.age}")
+    int age;
+
+    /**
+     * Test nacos config
+     * @return
+     */
+    @GetMapping("/getConfigValue")
+    @ApiOperation(value = "测试nacos config", notes = "测试nacos config")
+    public Result<String> TestNacosConfig(){
+        String configData = userName + " : " +age;
+        return Result.OK(configData);
+
     }
 
 
