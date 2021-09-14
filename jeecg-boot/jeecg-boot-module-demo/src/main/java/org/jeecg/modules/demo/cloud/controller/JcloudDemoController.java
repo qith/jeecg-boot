@@ -7,6 +7,7 @@ import org.jeecg.common.api.vo.Result;
 
 import org.jeecg.common.system.api.ISysBaseAPI;
 import org.jeecg.common.system.vo.DictModel;
+import org.jeecg.common.testfeign.TestFeign;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +31,9 @@ public class JcloudDemoController {
     @Resource
     private ISysBaseAPI sysBaseAPI;
 
+    @Resource
+    private TestFeign testFeign;
+
     /**
      * 测试
      *
@@ -45,6 +49,16 @@ public class JcloudDemoController {
 //            e.printStackTrace();
 //        }
         List<DictModel> list = sysBaseAPI.queryAllDict();
+        return Result.OK(list);
+    }
+
+    /**
+     * 测试，getRolesByUsername
+     */
+    @GetMapping("/getRolesByUsername")
+    @ApiOperation(value="getRolesByUsername", notes = "getRolesByUsername")
+    public Result remoteGetRolesByUsername(){
+        List<String> list = sysBaseAPI.getRolesByUsername("admin");
         return Result.OK(list);
     }
 
@@ -64,6 +78,15 @@ public class JcloudDemoController {
         String configData = userName + " : " +age;
         return Result.OK(configData);
 
+    }
+
+    /**
+     * TestFeign
+     */
+    @GetMapping("/testfeign")
+    @ApiOperation(value = "TestFeign", notes = "TestFeign")
+    public Result<String> TestFeign(){
+        return Result.OK(testFeign.feignM1());
     }
 
 
