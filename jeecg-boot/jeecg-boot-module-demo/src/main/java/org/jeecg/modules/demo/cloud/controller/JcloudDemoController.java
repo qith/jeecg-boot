@@ -8,8 +8,6 @@ import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.constant.ServiceNameConstants;
 import org.jeecg.common.system.api.ISysBaseAPI;
 import org.jeecg.common.system.vo.DictModel;
-import org.jeecg.common.testfeign.api.TestFeign;
-import org.jeecg.common.testfeign.api.TestFeignDyn;
 import org.jeecg.starter.cloud.feign.impl.JeecgFeignService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,9 +32,6 @@ public class JcloudDemoController {
 
     @Resource
     private ISysBaseAPI sysBaseAPI;
-
-    @Resource
-    private TestFeign testFeign;
 
 
     /**
@@ -83,24 +78,5 @@ public class JcloudDemoController {
 
     }
 
-    /**
-     * Feign 测试，api，自定义feign客户端方式
-     */
-    @GetMapping("/testfeign")
-    @ApiOperation(value = "TestFeign", notes = "TestFeign")
-    public Result<String> TestFeign(){
-        return Result.OK(testFeign.feignM1("hello"));
-    }
-
-    @Autowired
-    private JeecgFeignService jeecgFeignService;
-
-    @GetMapping("/getMessage2")
-    @ApiOperation(value = "测试动态feign", notes = "测试动态feign")
-    public Result<String> getMessage2() {
-        TestFeignDyn myClientDyn = jeecgFeignService.newInstance(TestFeignDyn.class, ServiceNameConstants.SYSTEM_SERVICE);
-        Result<String> aaa = myClientDyn.getMessage("dny-fegin——jeecg-boot2");
-        return myClientDyn.getMessage("dny-fegin——jeecg-boot2");
-    }
 
 }

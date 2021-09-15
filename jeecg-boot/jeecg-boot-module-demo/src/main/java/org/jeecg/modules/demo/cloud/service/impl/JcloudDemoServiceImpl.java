@@ -8,6 +8,6 @@ import org.springframework.stereotype.Service;
 public class JcloudDemoServiceImpl implements JcloudDemoService {
     @Override
     public Result<String> getMessage(String name) {
-        return Result.OK("Hello，" + name);
+        return Result.OK("Hello in demo ，" + name);
     }
 }
