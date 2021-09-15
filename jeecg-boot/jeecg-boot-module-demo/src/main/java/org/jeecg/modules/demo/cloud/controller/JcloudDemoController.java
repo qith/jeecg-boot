@@ -5,9 +5,13 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.jeecg.common.api.vo.Result;
 
+import org.jeecg.common.constant.ServiceNameConstants;
 import org.jeecg.common.system.api.ISysBaseAPI;
 import org.jeecg.common.system.vo.DictModel;
-import org.jeecg.common.testfeign.TestFeign;
+import org.jeecg.common.testfeign.api.TestFeign;
+import org.jeecg.common.testfeign.api.TestFeignDyn;
+import org.jeecg.starter.cloud.feign.impl.JeecgFeignService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,10 +38,9 @@ public class JcloudDemoController {
     @Resource
     private TestFeign testFeign;
 
+
     /**
-     * 测试
-     *
-     * @return
+     * Feign 测试，获取字典
      */
     @GetMapping("/remote")
     @ApiOperation(value = "测试feign", notes = "测试feign")
@@ -53,7 +56,7 @@ public class JcloudDemoController {
     }
 
     /**
-     * 测试，getRolesByUsername
+     * Feign 测试，getRolesByUsername
      */
     @GetMapping("/getRolesByUsername")
     @ApiOperation(value="getRolesByUsername", notes = "getRolesByUsername")
@@ -62,16 +65,16 @@ public class JcloudDemoController {
         return Result.OK(list);
     }
 
+
+    /**
+     * 配置文件获取 测试，nacos 动态刷新
+     */
     @Value("${user.name}")
     String userName;
 
     @Value("${user.age}")
     int age;
 
-    /**
-     * Test nacos config
-     * @return
-     */
     @GetMapping("/getConfigValue")
     @ApiOperation(value = "测试nacos config", notes = "测试nacos config")
     public Result<String> TestNacosConfig(){
@@ -81,13 +84,23 @@ public class JcloudDemoController {
     }
 
     /**
-     * TestFeign
+     * Feign 测试，api，自定义feign客户端方式
      */
     @GetMapping("/testfeign")
     @ApiOperation(value = "TestFeign", notes = "TestFeign")
     public Result<String> TestFeign(){
-        return Result.OK(testFeign.feignM1());
+        return Result.OK(testFeign.feignM1("hello"));
     }
 
+    @Autowired
+    private JeecgFeignService jeecgFeignService;
+
+    @GetMapping("/getMessage2")
+    @ApiOperation(value = "测试动态feign", notes = "测试动态feign")
+    public Result<String> getMessage2() {
+        TestFeignDyn myClientDyn = jeecgFeignService.newInstance(TestFeignDyn.class, ServiceNameConstants.SYSTEM_SERVICE);
+        Result<String> aaa = myClientDyn.getMessage("dny-fegin——jeecg-boot2");
+        return myClientDyn.getMessage("dny-fegin——jeecg-boot2");
+    }
 
 }
