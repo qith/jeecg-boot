@@ -61,6 +61,14 @@ public class JcloudDemoController {
     }
 
 
+    @GetMapping("/getShopHello")
+    @ApiOperation(value="getShopHello", notes = "getShopHello")
+    public Result remoteGetShopHello(){
+//TODO: 增加调用shop方法
+        return Result.OK("todo");
+    }
+
+
     /**
      * 配置文件获取 测试，nacos 动态刷新
      */
