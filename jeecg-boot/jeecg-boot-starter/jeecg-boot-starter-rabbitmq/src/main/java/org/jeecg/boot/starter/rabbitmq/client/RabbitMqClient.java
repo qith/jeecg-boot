@@ -358,6 +358,7 @@ public class RabbitMqClient {
      * @return
      */
     public DirectExchange createExchange(String exchangeName) {
+
         return new DirectExchange(exchangeName, true, false);
     }
 }
