@@ -3,6 +3,7 @@ package org.jeecg.boot.starter.rabbitmq.core;
 import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.jeecg.boot.starter.rabbitmq.listenter.MqListener;
+import org.jeecg.common.base.BaseMap;
 
 import java.io.IOException;
 
@@ -11,7 +12,12 @@ public class BaseRabbiMqHandler<T> {
 
     public void onMessage(T t, Long deliveryTag, Channel channel, MqListener mqListener) {
         try {
-            mqListener.handler(t, channel);
+            if(t instanceof BaseMap){
+                mqListener.handler(t, channel);
+            }else{
+                mqListener.handlerStr(t, channel);
+            }
+
             channel.basicAck(deliveryTag, false);
         } catch (Exception e) {
             log.info("接收消息失败,重新放回队列");
