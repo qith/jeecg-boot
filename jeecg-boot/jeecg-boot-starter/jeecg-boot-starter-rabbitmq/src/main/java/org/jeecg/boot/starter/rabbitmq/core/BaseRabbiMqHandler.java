@@ -12,12 +12,7 @@ public class BaseRabbiMqHandler<T> {
 
     public void onMessage(T t, Long deliveryTag, Channel channel, MqListener mqListener) {
         try {
-            if(t instanceof BaseMap){
-                mqListener.handler(t, channel);
-            }else{
-                mqListener.handlerStr(t, channel);
-            }
-
+            mqListener.handler(t, channel);
             channel.basicAck(deliveryTag, false);
         } catch (Exception e) {
             log.info("接收消息失败,重新放回队列");
