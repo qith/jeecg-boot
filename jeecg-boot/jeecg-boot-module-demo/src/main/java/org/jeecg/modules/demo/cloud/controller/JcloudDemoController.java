@@ -3,22 +3,25 @@ package org.jeecg.modules.demo.cloud.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.jeecg.boot.starter.rabbitmq.client.RabbitMqClient;
 import org.jeecg.common.api.vo.Result;
 
+import org.jeecg.common.base.BaseMap;
 import org.jeecg.common.constant.ServiceNameConstants;
 import org.jeecg.common.system.api.ISysBaseAPI;
 import org.jeecg.common.system.vo.DictModel;
+import org.jeecg.modules.demo.cloud.entity.User;
 import org.jeecg.modules.demo.feign.IshopRemoteApi;
 import org.jeecg.starter.cloud.feign.impl.JeecgFeignService;
+import org.jeecg.tools.CloudConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -36,6 +39,9 @@ public class JcloudDemoController {
 
     @Autowired
     private IshopRemoteApi ishopRemoteApi;
+
+    @Autowired
+    RabbitMqClient rabbitMqClient;
 
 
     /**
@@ -87,6 +93,15 @@ public class JcloudDemoController {
         String configData = userName + " : " +age;
         return Result.OK(configData);
 
+    }
+
+    @ApiOperation(value = "sendRabbitMsg", notes = "sendRabbitMsg")
+    @PostMapping(value = "/sendRabbitMsg")
+    public void sendRabbitMsg(@RequestBody User user) {
+
+        Map map = new BaseMap();
+        map.put("user", user);
+        rabbitMqClient.sendMessage(CloudConstant.MQ_JEECG_SHOP_TEST,map);
     }
 
 
