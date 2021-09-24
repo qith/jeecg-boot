@@ -24,7 +24,7 @@ public class ShopReceiver1 extends BaseRabbiMqHandler<String> {
         super.onMessage(str, deliveryTag, channel, new MqListener<String>() {
             @Override
             public void handler(String str, Channel channel) {
-                log.info("      " + str);
+                log.info("MQ：shopReceiver1= " + str);
             }
 
         });
